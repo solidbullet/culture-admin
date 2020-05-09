@@ -1,6 +1,7 @@
 const router = require('koa-router')()
-const util = require('./util.js')
+const util = require('../util.js')
 const config = require("../config.json")
+const article = require("../controller/getarticles.js")
 const CLOUD_FUNCTION_NAME = 'upload'
 
 router.get('/ueditor', async (ctx, next) => {
@@ -78,6 +79,11 @@ router.post('/uploadThumb', async (ctx, next) => {
   let originalname = req.files.file.name
   let res = await util.sendMultipart('thumbs',filetemppath,originalname);
   ctx.body = res.resp_data
+})
+
+router.get('/articlelist', async (ctx, next) => {
+  let res = await article.getarticles("残疾预防",0)
+  ctx.body = res
 })
 
 router.get('/string', async (ctx, next) => {
