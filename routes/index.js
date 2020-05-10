@@ -14,7 +14,7 @@ router.get('/ueditor', async (ctx, next) => {
 
 router.get('/', async (ctx, next) => {
 
-  await ctx.render('article')
+  await ctx.render('index')
 
 })
 
