@@ -4,10 +4,12 @@ var Article = require('../../models/article.model');
 
 
 const getarticlespage = async (nav1,pagenum,skipindex) => await Article.find({nav1:nav1}).limit(pagenum).skip(skipindex).catch((error)=>console.log(error));   //分页查询 nav1,pagenum,skipindex
+const findByID = async (id) => await Article.findById(id).catch((error)=>console.log(error));
+const serachArticles = async (reg) => await Article.find({title:{$regex : reg}}).catch((error)=>console.log(error));
+const readnumplusone = async (id) => await Article.where({_id: id}).update({$inc: {readnum: 1}})
 
 
-
-module.exports = {getarticlespage};
+module.exports = {getarticlespage,findByID,serachArticles,readnumplusone};
 
 /*多条件联合模糊查询
 const keyword = this.params.keyword //从URL中传来的 keyword参数
