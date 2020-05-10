@@ -9,6 +9,7 @@ const koaBody = require('koa-body');
 
 const index = require('./routes/index')
 const users = require('./routes/users')
+const wxcloud = require('./routes/wxcloud/cloudrouter')
 
 //npm add koa-views ejs  安装ejs模板引擎
 // error handler
@@ -47,7 +48,7 @@ app.use(async (ctx, next) => {
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
-
+app.use(wxcloud.routes(), users.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

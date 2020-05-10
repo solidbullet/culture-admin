@@ -6,7 +6,10 @@ require('../db/index');
 const addMany = async (model,arr) => await model.insertMany(arr,{ordered:true}).catch((error)=>console.log(error));
 const add = async v => await v.save().catch((error)=>console.log(error));
 const findByID = async (id,model) => await model.findById(id,model).catch((error)=>console.log(error));
+
 const getLimit = async (num,model) => await model.find({}).limit(num).catch((error)=>console.log(error)); 
+const getarticlepage = async (num,model) => await model.find({}).limit(num).catch((error)=>console.log(error));   //分页查询
+
 const delArticleByTitle = async (title,model) => await model.deleteOne({ title: title }).catch((error)=>console.log(error));
 const delArticleByID = async (id,model) => await model.deleteOne({ _id: id }).catch((error)=>console.log(error));
 const updateByID = async (id,updateobj,model) => await model.findByIdAndUpdate(id,updateobj).catch((error)=>console.log(error));
