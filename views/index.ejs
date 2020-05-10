@@ -40,6 +40,17 @@
             </li>
           </ul></div>
         <div class="col-sm-10" style="background-color:#ffffff;">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" ng-model="title" placeholder="搜索文章">
+                <div class="input-group-append">
+                  <button class="btn btn-success" ng-click="query()" type="submit">搜索</button>  
+                 </div>
+              </div>
+            </div>
+          </div>
+   
           <h4>文章列表</h4>
           <table class="table table-bordered">
             <thead>
@@ -80,6 +91,18 @@
         $scope.article = response.data
         console.log($scope.article)
       });
+
+      $scope.query = function () {
+
+        $http({
+          method: 'GET',
+          url: `/wxcloud/searcharticles?word=${$scope.title}`
+        }).success(function (response) {
+          console.log(response)
+          $scope.article = response
+        })
+
+      };
     });
     </script>
 </body>
