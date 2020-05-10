@@ -15240,7 +15240,7 @@ UE.plugin.register('simpleupload', function (){
                             loader.setAttribute('_src', link.slice(1,-1));
                             loader.setAttribute('title', json.title || '');
                             loader.setAttribute('alt', json.original || '');
-                            loader.setAttribute('style','max-width:650px');
+                            loader.setAttribute('style','max-width:300px');
                             loader.removeAttribute('id');
                             domUtils.removeClasses(loader, 'loadingclass');
                         } else {
