@@ -1,23 +1,88 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>文化惠残管理系统</title>
-<link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<script src="./vue/vue.min.js"></script>
-</head>
-<body>
-<div id="app">
-  <p>{{ message }}</p>
-</div>
 
-<script>
-new Vue({
-  el: '#app',
-  data: {
-    message: 'Hello Vue.js!，本网站主要用于测试各种web框架及技术,包括nodejs、微信小程序、angularjs、vuejs、koa2、express等'
-  }
-})
-</script>
+<head>
+  <meta charset="utf-8">
+  <title>文化惠残管理系统</title>
+  <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../lib/stylesheets/style.css" rel="stylesheet">
+  <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+  <script src="../lib/vue/vue.min.js"></script>
+</head>
+
+<body>
+  <div ng-app="myApp" ng-controller="siteCtrl">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2" style="background-color:rgb(30, 30, 32);">        
+          <ul class="nav flex-column">
+            <!-- <p style="color:white">图文</p> -->
+            <h5 class="slide-nav-title" style="margin-top: 20px;">图文</h5>
+            <li class="nav-item">
+              <a class="nav-link" href="./publish">发布</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/">管理</a>
+            </li>
+            <h5 class="slide-nav-title" >视频</h5>
+            <li class="nav-item">
+              <a class="nav-link" href="#">发布</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">管理</a>
+            </li>
+            <h5 class="slide-nav-title" >音频</h5>
+            <li class="nav-item">
+              <a class="nav-link" href="#">发布</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">管理</a>
+            </li>
+          </ul></div>
+        <div class="col-sm-10" style="background-color:#ffffff;">
+          <h4>文章列表</h4>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>标题</th>
+                <th>文章类别</th>
+                <th>来源</th>
+                <th>创建日期</th>
+                <th>详情</th>
+                <th>修改</th>
+                <th>删除</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="x in article">
+                <td>{{x.title}}</td>
+                <td>{{x.nav1}}</td>
+                <td>{{x.author}}</td>
+                <td>{{x.createdAt | date:'yyyy-MM-dd HH:mm'}}</td>
+                <td><a target="_blank" href="/detail?id={{x._id}}">详情</a></td>
+                <td><a target="_blank" href="/updatearticle?id={{x._id}}">修改</a></td>
+                <td><a href="/delarticle?id={{x._id}}">删除</a></td>
+              </tr>
+            </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" charset="utf-8" src="../lib/jquery/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="../lib/util/js/date.js"></script>
+
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('siteCtrl', function($scope, $http) {
+      $http.get("/articlelist")
+      .then(function (response) {
+        $scope.article = response.data
+        console.log($scope.article)
+      });
+    });
+    </script>
 </body>
+
 </html>

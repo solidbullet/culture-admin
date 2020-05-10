@@ -1,7 +1,8 @@
 const router = require('koa-router')()
 const util = require('../util.js')
 const config = require("../config.json")
-const article = require("../controller/getarticles.js")
+const db = require('./crud')
+var Article = require('../models/article.model');
 const CLOUD_FUNCTION_NAME = 'upload'
 
 router.get('/ueditor', async (ctx, next) => {
@@ -15,6 +16,12 @@ router.get('/ueditor', async (ctx, next) => {
 router.get('/', async (ctx, next) => {
 
   await ctx.render('index')
+
+})
+
+router.get('/publish', async (ctx, next) => {
+
+  await ctx.render('publish')
 
 })
 
@@ -68,8 +75,8 @@ router.post("/ueditor/ue", async (ctx, next) => {
 
 router.post("/savearticle", async (ctx, next) => {
   let req = ctx.request
-  console.log(req.body)
-  let res = await util.uploadArticle(req.body)
+  var art1 = new Article(req.body);
+  let res = await db.add(art1)
   ctx.body = res
 });
 
@@ -82,7 +89,42 @@ router.post('/uploadThumb', async (ctx, next) => {
 })
 
 router.get('/articlelist', async (ctx, next) => {
-  let res = await article.getarticles("残疾预防",0)
+  let res = await   db.getLimit(10,Article)
+  ctx.body = res
+})
+
+router.get('/delarticle', async (ctx, next) => {
+  let id = ctx.query.id;
+  let res = await   db.delArticleByID(id,Article)
+  await ctx.render('index')
+})
+
+router.get('/updatearticle', async (ctx, next) => {
+  let id = ctx.query.id;
+  await ctx.render('upload.ejs', {
+    id: id
+  })
+})
+
+router.get('/detail', async (ctx, next) => {
+  let id = ctx.query.id;
+  await ctx.render('detail.ejs', {
+    id: id
+  })
+})
+router.post('/updatearticlebyid', async (ctx, next) => {
+
+  let data = ctx.request.body;
+  
+  let updateobj ={title:data.title,content:data.content,thumb:data.thumb,author:data.author,nav1:data.nav1}
+  console.log(updateobj)
+  let res = await  db.updateByID(data.id,updateobj,Article) 
+  ctx.body = res
+})
+
+router.get('/findbyid', async (ctx, next) => {
+  let id = ctx.query.id;
+  let res = await  db.findByID(id,Article) 
   ctx.body = res
 })
 
