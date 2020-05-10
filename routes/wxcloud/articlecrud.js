@@ -5,7 +5,10 @@ var Article = require('../../models/article.model');
 
 const getarticlespage = async (nav1,pagenum,skipindex) => await Article.find({nav1:nav1}).limit(pagenum).skip(skipindex).catch((error)=>console.log(error));   //分页查询 nav1,pagenum,skipindex
 const findByID = async (id) => await Article.findById(id).catch((error)=>console.log(error));
-const serachArticles = async (reg) => await Article.find({title:{$regex : reg}}).catch((error)=>console.log(error));
+const serachArticles = async (word) => {
+    const reg = new RegExp(word, 'i') //不区分大小写
+    return await Article.find({title:{$regex : reg}}).catch((error)=>console.log(error));
+}
 const readnumplusone = async (id) => await Article.where({_id: id}).update({$inc: {readnum: 1}})
 
 
