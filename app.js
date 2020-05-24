@@ -6,11 +6,11 @@ const onerror = require('koa-onerror')
 // const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const koaBody = require('koa-body');
-
+const cors = require('koa2-cors');
 const index = require('./routes/index')
 const users = require('./routes/users')
 const wxcloud = require('./routes/wxcloud/cloudrouter')
-
+app.use(cors());
 //npm add koa-views ejs  安装ejs模板引擎
 // error handler
 onerror(app)

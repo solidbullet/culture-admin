@@ -4,7 +4,7 @@ const config = require("../config.json")
 const db = require('./crud')
 var Article = require('../models/article.model');
 const CLOUD_FUNCTION_NAME = 'upload'
-
+// const ueconfig = require("../public/ueditor/nodejs/config.json")
 router.get('/ueditor', async (ctx, next) => {
 
   await ctx.render('ueditor', {
@@ -42,6 +42,12 @@ router.get("/ueditor/ue", async (ctx, next) => {
     // console.log('config.json')
     ctx.set('Content-Type', 'application/json');
     ctx.redirect('/ueditor/nodejs/config.json');
+    // ctx.body = ueconfig;
+    // let json = JSON.parse(`{ "imageActionName": "uploadimage", "imageFieldName": "upfile","imageMaxSize": 2048000,"imageAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],
+    // "imageCompressEnable": true,"imageCompressBorder": 1600,"imageInsertAlign": "none","imageUrlPrefix": "",
+    // "imagePathFormat": "/ueditor/php/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}" }`);
+    // console.log(json)
+    // ctx.body = json
   }
 });
 
@@ -53,9 +59,11 @@ router.post("/ueditor/ue", async (ctx, next) => {
 
   let ActionType = req.query.action;
   if (ActionType === 'uploadimage' || ActionType === 'uploadfile' || ActionType === 'uploadvideo') {
+    
     let res = await util.sendMultipart('images',filetemppath,originalname);
-
+    
     let obj = {"url":res.resp_data,title:originalname,"original":originalname,"state":"SUCCESS"}
+    console.log('post',obj)
     ctx.body = obj
     ctx.set('Content-Type', 'text/html')
     // res.setHeader('Content-Type', 'text/html');
@@ -89,7 +97,7 @@ router.post('/uploadThumb', async (ctx, next) => {
 })
 
 router.get('/articlelist', async (ctx, next) => {
-  let res = await   db.getLimit(10,Article)
+  let res = await   db.getLimit(Article)
   ctx.body = res
 })
 
